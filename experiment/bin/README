@@ -1,0 +1,10 @@
+This directory contains Perl scripts for conducting the experiments.
+Of particular interest are the public. scripts.
+
+list.txt			- A list of Brown corpus files for use as the text sample pool
+public.batch		- Batch test algorithms
+public.makeSample	- Construct test samples
+public.makeSummary	- Given the TestLog.txt file, generates Latex tables to summarise results
+
+Freddy Choi - 11th Nov 1999
+choif@cs.man.ac.uk

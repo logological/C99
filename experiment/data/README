@@ -1,0 +1,9 @@
+These are the datasets used to produce the results in the ANLP00 paper
+
+1	- Experiment on datasets of different sizes (exclusive sets)
+2	- Second experiment to verify the results obtained using 1
+3	- Experiment on dataset with full size range (3-11)
+4	- Experiment on different sized rank mask and spread activation with ranking
+
+Freddy Choi - 11th Nov 1999
+choif@cs.man.ac.uk

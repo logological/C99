@@ -1,0 +1,30 @@
+#! /usr/bin/perl
+
+# Apply a command to a directory of files, user has access to
+# *IN* and *OUT* which are the input and output file
+# Use : -i <input directory> -o <output directory> -c <command>
+
+# Grab arguments
+%Arguments = @ARGV;
+$in = $Arguments{"-i"};
+$out = $Arguments{"-o"};
+$command = $Arguments{"-c"};
+
+# Get input files
+opendir(inDIR, $in);
+@inFiles = sort(readdir(inDIR));
+closedir(inDIR);
+
+# Create output directory
+mkdir($out, 0777);
+
+# Batch process
+foreach $file (@inFiles) {
+	if (-f "$in\/$file") {
+		$exec = $command;
+		$exec =~ s/\*IN\*/"$in\/$file"/g;
+		$exec =~ s/\*OUT\*/"$out\/$file"/g;
+		print STDOUT "Processing $exec ....\n";
+		system("$exec");
+	}
+}

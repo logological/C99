@@ -1,0 +1,55 @@
+# 3x3 ranking mask
+BEGIN ==================== Accuracy
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+ & 3-11\\
+\hline
+1 & 0.46\\
+2 & 0.54\\
+3 & 0.54\\
+4 & 0.46\\
+5 & 0.54\\
+6 & 0.21\\
+7 & 0.24\\
+8 & 0.21\\
+9 & 0.21\\
+10 & 0.12\\
+12 & 0.22\\
+13 & 0.18\\
+14 & 0.22\\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{}
+\end{table}
+END ====================== Accuracy
+BEGIN ==================== Elapsed
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+ & 3-11\\
+\hline
+1 & 0.37\\
+2 & 0.36\\
+3 & 0.36\\
+4 & 0.36\\
+5 & 3.77\\
+6 & 4.50\\
+7 & 4.52\\
+8 & 4.60\\
+9 & 4.50\\
+10 & 4.51\\
+12 & 46.58\\
+13 & 41.02\\
+14 & 29.58\\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{}
+\end{table}
+END ====================== Elapsed

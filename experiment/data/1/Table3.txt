@@ -1,0 +1,31 @@
+# 11x11 mask, automatic determination of # segments
+BEGIN ==================== Accuracy
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+ & 3-11 & 3-5 & 6-8 & 9-11\\
+\hline
+19 & 0.12 & 0.18 & 0.09 & 0.10\\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{}
+\end{table}
+END ====================== Accuracy
+BEGIN ==================== Elapsed
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+ & 3-11 & 3-5 & 6-8 & 9-11\\
+\hline
+19 & 4.02 & 2.06 & 3.90 & 6.17\\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\label{}
+\end{table}
+END ====================== Elapsed

@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+
+# Remove boundaries from text file
+
+while (<STDIN>) {
+	if (!m/^=*$/) { print STDOUT $_; }
+}

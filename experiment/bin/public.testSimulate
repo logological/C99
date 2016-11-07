@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Test an algorithm
+
+## ARG
+DATASET=$1
+CODENAME=$2
+SIMULATE=$3
+
+## VAR
+LOG=$DATASET/TestLog.txt
+#applyToDir -i $DATASET/3-5 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+#applyToDir -i $DATASET/6-8 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+#applyToDir -i $DATASET/9-11 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+
+
+applyToDir -i $DATASET/3-11 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"

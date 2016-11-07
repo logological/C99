@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Test an algorithm for one sample
+
+CODENAME=$1
+COMMAND=$2
+SAMPLE=$3
+LOG=$4
+
+echo === >> $LOG
+echo $CODENAME >> $LOG
+echo $SAMPLE >> $LOG
+time -f "%U" -a -o $LOG private.testAccuracy "$COMMAND" "$SAMPLE" "$LOG"

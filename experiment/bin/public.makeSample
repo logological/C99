@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Make a dataset
+
+#mkdir 3-5
+#mkdir 6-8
+#mkdir 9-11
+#applyNTimes -n 50 -c "randomSelect -n 10 < list.txt | private.makeOneSample -min 3 -max 5 > 3-5/*N*.ref"
+#applyNTimes -n 50 -c "randomSelect -n 10 < list.txt | private.makeOneSample -min 6 -max 8 > 6-8/*N*.ref"
+#applyNTimes -n 50 -c "randomSelect -n 10 < list.txt | private.makeOneSample -min 9 -max 11 > 9-11/*N*.ref"
+
+mkdir 3-11
+applyNTimes -n 50 -c "randomSelect -n 10 < list.txt | private.makeOneSample -min 3 -max 11 > 3-11/*N*.ref"

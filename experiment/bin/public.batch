@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Batch test algorithms
+
+# ARG
+DATASET=$1
+
+# PROG
+#rmiregistry 2000 &
+#sleep 2s
+#JPosServer &
+#sleep 2s
+
+
+#public.testSimulate $DATASET "1" "1"						# OK Simulation of beeferman metric (propose none)
+#public.testSimulate $DATASET "2" "2"						# OK Simulation of beeferman metric (propose all)
+#public.testSimulate $DATASET "3" "3"						# OK Simulation of beeferman metric (random unknown #boundaries)
+#public.testSimulate $DATASET "4" "4"						# OK Simulation of beeferman metric (random known #boundaries)
+
+#public.testAlgorithm $DATASET "5" "JTextTile"				# OK TextTiling with default parameters
+
+# My implementation of DotPlot using maximization
+#public.testAlgorithm $DATASET "6" "JDotPlotF -n 10 -a 0"	# Normal
+#public.testAlgorithm $DATASET "7" "JDotPlotF -n 10 -a 1"	# Smoothing
+#public.testAlgorithm $DATASET "8" "JDotPlotF -n 10 -a 2"	# Noise reduction
+#public.testAlgorithm $DATASET "9" "JDotPlotF -n 10 -a 3"	# Thresholding
+#public.testAlgorithm $DATASET "10" "JDotPlotF -n 10 -a 4"	# Hard ranking
+
+# Block based DotPlot using maximization
+# public.testAlgorithm $DATASET "11" "JDotPlotB -n 10 -a 0"	# Stem reiteration without stopword removal
+#public.testAlgorithm $DATASET "12" "JDotPlotB -n 10 -a 1"	# Stem reiteration with stopword removal
+#public.testAlgorithm $DATASET "13" "JDotPlotB -n 10 -a 4"	# Spread activation
+
+# Exact implementation of Dotplot
+#public.testAlgorithm $DATASET "14" "JDotPlot -n 10"			# Maximization
+#public.testAlgorithm $DATASET "15" "JDotPlot -n 10 --min"		# Minimization
+
+# Segmenter
+#public.testAlgorithm $DATASET "16" "JSegmenter"				# Memory problems, fixed distance model
+#public.testAlgorithm $DATASET "17" "JSegmenter --adaptive"	# Adaptive distance model
+
+#public.testAlgorithm $DATASET "18" "C99 -n 10"				# Reimplementation of C99
+public.testAlgorithm $DATASET "19" "C99"					# Automatic boundary detection
