@@ -1,0 +1,5 @@
+#!/bin/bash
+
+public.batch ../data/1
+public.batch ../data/2
+public.batch ../data/3

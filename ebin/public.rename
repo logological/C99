@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+# Renames an experiment name in a test log
+# Usage -o <old name> -n <new name>
+
+%arg=@ARGV;
+$old = $arg{"-o"};
+$new = $arg{"-n"};
+
+$exp = "^$old\$";
+
+while (<STDIN>) {
+	if (m!^===$!) {
+		print STDOUT $_;
+		$name = <STDIN>;
+		$name =~ s!$exp!$new!;
+		print STDOUT $name;
+	}
+	else {
+		print STDOUT $_;
+	}
+}

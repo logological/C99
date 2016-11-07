@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+# Randomly select n lines from a list
+# -n <number of lines to select>
+
+%arg = @ARGV;
+$number = $arg{"-n"};
+@lines = ();
+$total = 0;
+while ($line[$total++] = <STDIN>) {}
+$total--;
+for ($i=0; $i<$number; $i++) { print STDOUT $line[int(rand($total))]; }

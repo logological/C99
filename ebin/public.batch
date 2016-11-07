@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# Batch test algorithms
+# Usage   : public.batch <DATASET>
+# Example : public.batch ../data/1
+
+PATH=.:../bin:../bin/TextTile:$PATH
+CLASSPATH=../bin:$CLASSPATH
+
+# --- ARGUMENTS
+DATASET=$1
+
+# --- EXPERIMENTS
+#public.testSimulate $DATASET "1" "1"		# Simulation of beeferman metric (propose none)
+#public.testSimulate $DATASET "2" "2"		# Simulation of beeferman metric (propose all)
+#public.testSimulate $DATASET "3" "3"		# Simulation of beeferman metric (random unknown #boundaries)
+#public.testSimulate $DATASET "4" "4"		# Simulation of beeferman metric (random known #boundaries)
+
+#public.testAlgorithm $DATASET "5" "JTextTile -sw ../resource/STOPWORD.list"	# TextTiling with default parameters
+
+# My implementation of DotPlot using maximization, cosine similarity by default, speed optimised with pre-calculation
+#public.testAlgorithm $DATASET "6" "JDotPlotF -n 10 -a 0"		# Normal
+#public.testAlgorithm $DATASET "7" "JDotPlotF -n 10 -a 1"		# Smoothing
+#public.testAlgorithm $DATASET "8" "JDotPlotF -n 10 -a 2"		# Noise reduction
+#public.testAlgorithm $DATASET "9" "JDotPlotF -n 10 -a 3"		# Thresholding
+#public.testAlgorithm $DATASET "10" "JDotPlotF -n 10 -a 4 -s 3"		# Hard ranking 3x3
+#public.testAlgorithm $DATASET "11" "JDotPlotF -n 10 -a 4 -s 5"		# Hard ranking 5x5
+#public.testAlgorithm $DATASET "12" "JDotPlotF -n 10 -a 4 -s 7"		# Hard ranking 7x7
+#public.testAlgorithm $DATASET "13" "JDotPlotF -n 10 -a 4 -s 9"		# Hard ranking 9x9
+#public.testAlgorithm $DATASET "14" "JDotPlotF -n 10 -a 4 -s 11"	# Hard ranking 11x11
+#public.testAlgorithm $DATASET "15" "JDotPlotF -n 10 -a 4 -s 13"	# Hard ranking 13x13
+#public.testAlgorithm $DATASET "16" "JDotPlotF -n 10 -a 5 -s 11"	# Hard ranking 11x11 with spread activation as similarity metric
+#public.testAlgorithm $DATASET "17" "JDotPlotF -n 10 -a 6 -s 11"	# Hard ranking 11x11, rank used as weight for similarity matrix
+
+# Block based DotPlot using maximization, uses dot density for similarity, similar to 14
+#public.testAlgorithm $DATASET "18" "JDotPlotB -n 10 -a 0"	# Stem reiteration without stopword removal
+#public.testAlgorithm $DATASET "19" "JDotPlotB -n 10 -a 1"	# Stem reiteration with stopword removal
+#public.testAlgorithm $DATASET "20" "JDotPlotB -n 10 -a 4"	# Spread activation
+
+# Exact implementation of Dotplot
+#public.testAlgorithm $DATASET "21" "JDotPlot -n 10"		# Maximization
+#public.testAlgorithm $DATASET "22" "JDotPlot -n 10 --min"	# Minimization
+
+# Segmenter
+# The following lines are required by Segmenter to function
+#rmiregistry 2000 &
+#sleep 2s
+#JPosServer -r ../resource/QTAG.tagset &
+#sleep 2s
+#public.testAlgorithm $DATASET "23" "JSegmenter"		# Memory problems, fixed distance model
+#public.testAlgorithm $DATASET "24" "JSegmenter --adaptive"	# Adaptive distance model
+
+# C99
+#public.testAlgorithm $DATASET "25" "C99 -n 10"			# Reimplementation of C99 11x11 mask
+#public.testAlgorithm $DATASET "26" "C99"			# Unknown # boundaries
+
+# TextTiling
+#public.testAlgorithm $DATASET "27" "Tile" 			# Default parameters
+#public.testAlgorithm $DATASET "28" "Tile -w 20 -k 6" 		# Optimal parameters according to Hearst's paper
+
+# More baselines
+public.testAlgorithm $DATASET "29" "simRegular -n 10"		# Chops document into 10 regular sized chunks
+
+#public.testAlgorithm $DATASET "30" "C99 -n 10 -s 1" 		# C99 with a 1x1 ranking mask, i.e. all rank 0
+#public.testAlgorithm $DATASET "31" "C99 -n 10 -s 3" 		# C99 with a 3x3 ranking mask
+#public.testAlgorithm $DATASET "32" "C99 -n 10 -s 5" 		# C99 with a 5x5 ranking mask
+#public.testAlgorithm $DATASET "33" "C99 -n 10 -s 7" 		# C99 with a 7x7 ranking mask
+#public.testAlgorithm $DATASET "34" "C99 -n 10 -s 9" 		# C99 with a 9x9 ranking mask
+#public.testAlgorithm $DATASET "35" "C99 -n 10 -s 11" 		# C99 with a 11x11 ranking mask
+#public.testAlgorithm $DATASET "36" "C99 -n 10 -s 13" 		# C99 with a 13x13 ranking mask
+#public.testAlgorithm $DATASET "37" "C99 -n 10 -s 15" 		# C99 with a 15x15 ranking mask
+#public.testAlgorithm $DATASET "38" "C99 -n 10 -s 17" 		# C99 with a 17x17 ranking mask
+
+# Kan's implementation of Segmenter
+#public.testAlgorithm $DATASET "39" "Segmenter"
+
+# Further testing of C99
+#public.testAlgorithm $DATASET "40" "C99 -w -s 11"		# C99 with weighted (entropy) cosine measure
+#public.testAlgorithm $DATASET "41" "C99 -w -s 11"		# C99 with weighted (inverse frequency) cosine measure
+#public.testAlgorithm $DATASET "42" "C99 -s 3"			# C99 with a 3x3 ranking mask, automatic termination
+
+private.beep # Alarm to tell you its all done

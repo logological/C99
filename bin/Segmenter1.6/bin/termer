@@ -1,0 +1,342 @@
+#!/usr/bin/perl
+# $Id: termer,v 3.1 2000/01/25 17:21:10 min Exp $ / Min-Yen Kan 
+#
+#	Extracts simplex noun phrases from a document via tagging or
+#	dictionary lookup.
+#	
+#	RCS: $Id: termer,v 3.1 2000/01/25 17:21:10 min Exp $
+#
+#	RCS: $Log: termer,v $
+#	RCS: Revision 3.1  2000/01/25 17:21:10  min
+#	RCS: Added -q switch in.
+#	RCS:
+#	RCS: Revision 3.0  2000/01/25 03:54:49  min
+#	RCS: Took modified version from /home/min/ab/workingSeg/t2.
+#	RCS:
+#	RCS: Revision 2.5  2000/01/24 20:43:32  min
+#	RCS: Modified minor directives to point at /home/min install directory.
+#	RCS:
+#	RCS: Revision 2.4  2000/01/24 01:40:36  min
+#	RCS: Added old comments back in.
+#	RCS:
+#	RCS: Revision 2.3  2000/01/24 01:39:59  min
+#	RCS: Changed source control system to RCS
+#	RCS: REVISION 2.0 (Tue Jun  2 22:20:32 EDT 1998)
+#	RCS: REV: get in shape for shipment.  Moved databases to gdbm format
+#	RCS: REV: (.db) from (. pag,.dir) format
+#	RCS: REVISION 2.1.tei (Thu Jun  4 10:38:25 EDT 1998)
+#	RCS: REV: this version is only good for TEI marked documents.  
+#	RCS: REVISION 2.2.tei (Sun Jun 28 15:48:27 EDT 1998)
+#	RCS: REV: put in license() calls and modified the mod'ed comlex ltb
+#
+require 5.0;
+use DB_File;
+use Getopt::Std;
+require "flush.pl";
+
+### USER customizable section
+$installDir = "/root/work/Experiments/naacl00/bin/Segmenter1.6";
+$comlexLoc = "$installDir/lib/modifiedComlex.new.db";
+$excLoc = "$installDir/lib/exception.new.db";
+
+$tmpfile .= $0; $tmpfile =~ s/[\.\/]//g; $tmpfile = "/tmp/" . $tmpfile . $$ . time;
+$0 =~ /([^\/]+)$/; $progname = $1;
+### END user customizable section
+
+### HELP Sub-procedure
+sub Help {	
+    print STDERR "usage: $0 -h\t\t\t\t[invokes help]\n";	
+    print STDERR "       $0 -v\t\t\t\t[invokes version]\n";	
+    print STDERR "\n";
+    print STDERR "Will accept input on STDIN as a single file.\n";
+    print STDERR "\n";
+}
+
+### Ctrl-C handler
+sub quitHandler {
+    print STDERR "\n# $0 fatal - received a 'SIGINT'\n# $0 - exiting cleanly\n";
+    exit;
+}
+
+### VERSION Sub-procedure
+sub Version {
+    open (IF, $0);
+    while (<IF>) {
+	if (/^\#/) { 
+	    if (/^\#\!/) { next; } else { s/^\#//; print STDERR $_; }
+	} else { last; }
+    }
+}
+
+### print LICENSE
+sub License {
+    print STDERR "Copyright \251 1998,2000 by The Trustees of Columbia University in the City of\n";
+    print STDERR "New York.  All rights reserved.  This software is being provided at no cost\n";
+    print STDERR "for educational and/or research purposes only.\n";
+}
+
+###
+### MAIN program
+###
+
+$SIG{'INT'} = 'quitHandler';
+getopts ('hqv');
+
+if ($opt_v) { &Version; exit(0); }				      # call Version, if asked for
+if ($opt_h) { &Help; exit (0); }				      # call help, if asked for
+if (!$opt_q) { &License; }					      # shut up, if asked for
+
+## read file and stick in data 
+tie (%comlex, 'DB_File', $comlexLoc, O_RDWR, 0444, $DB_HASH) || 
+    die "Cannot open database \"$comlexLoc\"";
+tie (%exc, 'DB_File', $excLoc, O_RDWR, 0444, $DB_HASH) || 
+    die "Cannot open database \"$excLoc\"";
+
+## standardize input stream (either STDIN on first arg on command line)
+if ($filename = shift) {
+  NEWFILE:
+    if (!(-e $filename)) { die "$0 crash\t\tFile $filename doesn't exist"; }
+    open (IF, "$filename") || die "$0 crash\t\tCan't open \"$filename\"";
+    $fh = "IF";
+} else {
+    $filename = "<STDIN>";
+    $fh = "STDIN";
+}
+
+$body = 0;
+while (<IF>) {
+    if (/\<body\>/) { $body = 1; $lines = $'; }
+    if (/\<\/body\>/) { $body = 0; $lines .= $`; last; }
+    if ($body == 1) { chop; $lines .= "$_ "; }
+}
+close (IF);
+
+@paras = split (/\<p\>/,$lines);
+push (@paraLocations, 1);
+
+for ($i = 1; $i <= $#paras; $i++) {
+    @sents = split (/\<s\>/,$paras[$i]); 
+    for ($j = 1; $j <= $#sents; $j++) {
+	$numSents++;
+
+	# formatting the sentence 
+	$sents[$j] =~ s/\<[^\>]+>/ /g; # rid other SGML tags
+	$sents[$j] =~ s/([^\w-\'\#&\/\.])/ $1 /g; # space out punctuation
+	$sents[$j] =~ s/ +/ /g; # get rid of multiple spaces
+	$sents[$j] =~ s/\. \. \./.../g; # compact ellipsis
+	$sents[$j] =~ s/\.([,?!:\-\"\'\`])/. $1/g; # space multi punc
+	$sents[$j] =~ s/[\'\`] [\`\']/\"/g; # compact quotations
+
+	$sents[$j] =~ s/('s )/ $1/g; # space out possesives
+	$sents[$j] =~ s/(n't )/ not /g; # change compacted negatives
+
+	$sents[$j] =~ s/([\.\?\!]+) ([\"\'\`] )?$/ $1 $2/g; # space out final sentence ender
+	$sents[$j] =~ s/^ //g; # rid front space, if any
+	$sents[$j] =~ s/>/> /g; # add a space after tags to delimit words
+	$sents[$j] =~ s/</ </g; # add a space before tags to delimit words
+
+	# fix more abbreviations
+	$sents[$j] =~ s/\'ve/ have/g; # compact quotations
+	$sents[$j] =~ s/\'ll/ will/g; # compact quotations
+	$sents[$j] =~ s/\'re/ are/g; # 
+
+	@words = split (/ +/,$sents[$j]);
+
+	## 0 proper noun 1 single cn 2 plural cn 3 adjective 4 preposition 5 discard 6 pronoun 7 cue phrases
+
+	for ($k = 0; $k <= $#words; $k++) {
+	    $saveWord = $words[$k];
+	    if ($k == 1 || $k == 0) { $saveWord =~ tr/A-Z/a-z/; }     # uncapitalize leading words
+	    $saveWord = &Canonicalize($saveWord);		      # then canonicalize them
+
+	    $lex = (defined $comlex{$saveWord}) ?		      # look up in comlex, if not there, 
+		$comlex{$saveWord} : 0;				      # default to proper noun
+
+	    if ($lex == 0) { 
+		# can't find it: if original form was not capitalized,
+		# consider it a proper noun
+
+		if ($words[$k] =~ /[A-Z]/) { $saveWord = $words[$k]; } # if "proper noun was capitalized, restore it
+		elsif ($saveWord =~ /\*$/) { $lex = 5; }
+		elsif ($saveWord =~ /^\d+$/) { $lex = 3; }	      # numbers are adjectives too.
+		else { $lex = 2; }				      # well, wasn't capitalized, new common noun
+	    }
+
+	    $posLine .= "$saveWord/$lex ";
+	}
+
+	while ($posLine =~ 
+	       m/(((([^ \/]+\/3) )*([^ \/]+\/[012] ))*([^ \/]+\/[012])|([^ \/]+\/[67])|^([^ \/]+\/1)|[\'\"]\/5)/g) {
+
+	    @words = split (/ /, $1);
+
+	    undef @word; undef $term;
+	    for ($k = 0; $k <= $#words; $k++) {
+		($word[$k], $lex[$k]) = split (/\//, $words[$k]);
+	    }
+	    $proper = ($words[$#words] =~ /\/0/) ? 1 : 0;
+	    $quot =($words[$#words] =~ /\"\/5/) ? 1 : 0;
+	    $pronoun = ($words[$#words] =~ /\/6/) ? 1 : 0;
+	    $cuePhrase =($words[$#words] =~ /\/7/) ? 1 : 0;
+
+	    if ($proper) { $word[$#words] .= "**"; }
+	    if ($quot) { $word[$#words] .= "****"; }
+	    if ($pronoun) { $word[$#words] .= "*"; }
+	    if ($cuePhrase) { $word[$#words] .= "***"; }
+
+#	    $term = join (" ",@word);
+	    $term = $word[$#words];
+
+	    $occurence{$term} .= "$numSents ";
+	    $terms{$term}++;
+	}
+	
+	## sentence-wide instructions
+	undef $posLine;
+    }
+
+    # paragraph-wide instructions
+    push (@paraLocations, $numSents+1);
+    undef @sents;
+}
+
+# fencepost error correction
+pop (@paraLocations);
+
+# print header
+&printflush (STDOUT, "# Filename: $filename\n");
+&printflush (STDOUT, "# Length: $numSents sentences\n");
+&printflush (STDOUT, "# Paragraph beginnings are located at sentences ");
+for ($i = 0; $i <= $#paraLocations; $i++) {
+    &printflush (STDOUT, "$paraLocations[$i] ");
+}
+&printflush (STDOUT, "\n");
+
+## do subsumption (only for head)
+# BUGS: yes, I know this isn't correct (see: "IBM" and "IBM Corp" don't get
+# BUGS: merged, but without this restriction it gets super sticky).
+
+# first, compile head lists
+foreach $key (keys %terms) {
+    @words = split (" ",$key);
+    if ($#words <= 0) { next; }
+    if (defined $terms{$words[$#words]}) {
+	# if already exists a single word term that is the same as the head
+	# of this multi-word one ...
+
+	$subsume{$words[$#words]} .= $occurence{$key};
+	$terms{$words[$#words]} += $terms{$key};
+    } else {
+	$subsume{$words[$#words]} .= $occurence{$key};
+	$subsumeCount{$words[$#words]}++;
+	$subsumeDelete{$words[$#words]} .= "$key|";
+    }
+}
+
+# then, only group together those which have the same head and delete the
+# old constituent words
+foreach $key (keys %subsumeCount) {
+    if ($subsumeCount{$key} > 1) {
+	@elems = split (/[\| ]+/, $subsume{$key});
+	$terms{$key} = $#elems + 1;
+	if (defined $subsumeDelete{$key}) {
+	    @killList = split (/\|/,$subsumeDelete{$key});
+	    for ($i = 0; $i <= $#killList; $i++) {
+		delete $terms{$killList[$i]};
+	    }
+	}
+    }
+}
+
+foreach $key (sort NumElements keys %terms) {
+    print "$terms{$key}\t";
+    chop $occurence{$key};
+    if ((defined $subsume{$key}) && ($subsumeCount{$key} > 1)) { 
+	chop $subsume{$key};
+	print "head\t$key$suffix ($subsume{$key})\n"; 
+    } elsif (defined $subsume{$key}) {
+	chop $subsume{$key};
+	print "part\t$key ($occurence{$key} | $subsume{$key})\n";  
+    } else { 
+	print "ok\t$key ($occurence{$key})\n";
+    }
+}
+
+undef @paras;
+undef %subsume;
+undef %subsumeCount;
+undef %terms;
+undef %occurence;
+
+## Finish up
+untie (%exc);
+untie (%comlex);
+close (OF);
+
+### OTHER subroutines
+
+## Returns the normal form of the argument
+sub Canonicalize {
+    local($w) = pop @_;
+    
+    if (defined $comlex{$w}) { return ($w) } 
+
+    if (defined $exc{$w}) { 	# Get exceptions
+	$temp = $exc{$w};
+	($temp, $temp2) = split (/\000/, $temp);
+	return ($temp); 
+    }
+
+    # Use WordNet rules to find stem
+    
+    # BUGS: it's not foolproof it may turn up the wrong stem by mistake!
+    # BUGS: since it just does it in order.
+
+    # nouns
+    if ($w =~ /(.+)s$/) { $temp = $1;
+			  if (defined $comlex{$temp}) { return ($temp) } }
+    if ($w =~ /(.+)ses$/) { $temp = $1;
+			    if (defined $comlex{$temp . "s"}) { return ($temp . "s") } }
+    if ($w =~ /(.+)xes$/) { $temp = $1;
+			    if (defined $comlex{$temp . "x"}) { return ($temp . "x") } }
+    if ($w =~ /(.+)zes$/) { $temp = $1; 
+			    if (defined $comlex{$temp . "z"}) { return ($temp . "z") } }
+    if ($w =~ /(.+)ches$/) { $temp = $1;
+			     if (defined $comlex{$temp . "ch"}) { return ($temp . "ch") } }
+    if ($w =~ /(.+)shes$/) { $temp = $1;
+			     if (defined $comlex{$temp . "sh"}) { return ($temp . "sh") } }
+    
+    # verbs - SPECIAL CASE - return canonicalized form + "*" to indicate not to be confused with 
+    # noun forms when looked up
+    if ($w =~ /(.+)ies$/) { $temp = $1;
+			    if (defined $comlex{$temp . "y"}) { return ($temp . "y*") } }
+    if ($w =~ /(.+)es$/) { $temp = $1;
+			   if (defined $comlex{$temp}) { return ($temp . "*"); } }
+    if ($w =~ /(.+)es$/) { $temp = $1;
+			   if (defined $comlex{$temp . "e"}) { return ($temp . "e*") } }
+    if ($w =~ /(.+)ed$/) { $temp = $1;
+			   if (defined $comlex{$temp}) { return ($temp . "*"); } }
+    if ($w =~ /(.+)ed$/) { $temp = $1; 
+			   if (defined $comlex{$temp . "e"}) { return ($temp . "e*") } }
+    if ($w =~ /(.+)ing$/) { $temp = $1;
+			if (defined $comlex{$temp}) { return ($temp . "*") } }
+    if ($w =~ /(.+)ing$/) { $temp = $1;
+			    if (defined $comlex{$temp . "e"}) { return ($temp . "e*") } }
+    
+    # adjectives			   
+    if ($w =~ /(.+)er$/) { $temp = $1;
+			   if (defined $comlex{$temp . ""}) { return ($temp) } }
+    if ($w =~ /(.+)er$/) { $temp = $1;
+			   if (defined $comlex{$temp . "e"}) { return ($temp . "e") } }
+    if ($w =~ /(.+)est$/) { $temp = $1;
+			    if (defined $comlex{$temp . ""}) { return ($temp) } }
+    if ($w =~ /(.+)est$/) { $temp = $1;
+			    if (defined $comlex{$temp . "e"}) { return ($temp . "e") } }
+    
+    $w;
+}
+
+## Returns the unpluralized form of the argument
+sub NumElements {
+    if (($terms{$b} <=> $terms{$a}) != 0) { $terms{$b} <=> $terms{$a}; }
+}

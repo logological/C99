@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Argument : <Using adaptive model?>
+
+java -ms20M -mx100M uk.ac.man.cs.choif.nlp.seg.linear.JSegmenter $@

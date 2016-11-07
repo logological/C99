@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Compute the statistical significance of all the experiment results
+# Expects to be executed in the current directory
+# Usage : <data directory> <output file>
+# Example : public.significance ../data ../data/significance.txt
+
+PATH=.:../bin:$PATH
+CLASSPATH=../bin:$CLASSPATH
+
+# --- ARGUMENTS ---
+IN=$1
+OUT=$2
+
+# --- PROGRAM ---
+mkdir scores.tmp
+cat `find $IN -name TestLog*` | public.extractScore -o scores.tmp
+JSignificance -i scores.tmp -o $OUT
+rm -rf scores.tmp

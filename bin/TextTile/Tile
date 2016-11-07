@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Make TextTiling into a pipe friendly program
+R=/root/work/Reftools/TextTile
+
+$R/insertParagraphBreaks > $R/temporaryText.txt
+$R/tile $@ $R/temporaryText.txt | $R/convertOutput
+rm -f $R/temporaryText.txt

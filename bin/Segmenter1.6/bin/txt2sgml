@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+
+# Convert a raw text file (lines of sentences) into SGML for use with segmenter
+
+print STDOUT
+"<tei.2>
+<teiHeader>
+<fileDesc><titleStmt><title>
+Missing Title
+</title><publicationStmt><p>
+Freddy Choi's artificial dataset for NAACL'00 paper
+</p></publicationStmt><sourceDesc><p>
+Brown corpus
+</p></sourceDesc></fileDesc></teiHeader>
+
+<text><body>
+";
+
+while (<STDIN>) {
+	print STDOUT "<p>\n<s>\n$_</s>\n</p>\n";
+}
+
+print STDOUT
+"</body></text>
+
+</tei.2>
+";

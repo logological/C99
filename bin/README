@@ -1,0 +1,186 @@
+This directory contains all the segmentation algorithms used in
+the experiments. See "../data/experiment code.txt" for details
+of the experiments conducted and the corresponding code.
+
+All cited papers are included in the package whenever possible,
+refer to the OPTannotate field for document name. The files can
+be found in "../doc" directory.
+
+All my algorithms have similar parameters, use "<program> -h" to
+display help message.
+
+--- ALGROTHMS ---
+Segmenter1.6	- Min-Yen Kan et al.'s implementation of Segmenter (kan_et_al_1998)
+		  with my own scripts to make the input and output compatible with
+		  my evaluation software. Note! You'll need to change the paths in
+		  all the original scripts to work. Can't do much about that, sorry.
+		  This is a bare-minimum distribution of Kan's Segmenter, you'll
+		  need his permission and license to get the full version. Don't
+		  forget to install DB_FILE and Berkeley DB (took me a while to suss
+		  that one out, duh!). Otherwise, Segmenter won't work (see
+		  Segmenter1.6/README.txt)
+
+Segmenter	- Script to invoke Segmenter as a pipe-friendly program. Don't
+		  forget to change to install path for your local installation.
+			
+TextTile	- Marti Hearst's implementation of the TextTiling algorithm
+		  (hearst_1994, hearst_1994b) with my own scripts to make the
+		  input and output compatible with my evaluation software.
+
+Tile		- Script to invoke TextTile as a pipe-friendly program. Don't
+		  forget to change to install path for your local installation.
+
+uk		- Java classes for all my algorithms
+
+C99		- My C99 algorithm for linear text segmentation (choi_2000naacl)
+
+JBeeferman	- My implementation of Beeferman's evaluation metric for linear segmentation
+				  (beeferman_et_al_1997, beeferman_et_al_1999)
+
+JBeefermanSim	- A simulation of four degenerate segmentation algorithms, refer to "../bin/public.batch"
+		  and "../data/experiment code.txt" for details of the four algorithm types.
+
+JDotPlot	- An exact implementation of Jeff Reynar's dotplotting algorithm (reynar_1994,
+		  reynar_1998, reynar_1999)
+
+JDotPlotB	- My block-based (less-memory intensive and more flexible) implementation of
+		  Jeff Reynar's dotplotting algorithm (reynar_1994, reynar_1998, reynar_1999)
+
+JDotPlotF	- A fully modularized and speed optimized version of DotPlotting for evaluating the
+		  performance of various simularity metrics (choi_2000naacl, reynar_1994, reynar_1998,
+		  reynar_1999). Refer to "../bin/public.batch" and "../data/experiment code.txt" for
+		  details of the six algorithm types.
+
+JPosServer	- A client/server POS tagger based on Oliver Mason's QTAG (mason_1998). This is used
+		  by JSegmenter.
+
+JSegmenter	- My implementation of Min-Yen Kan et al.'s Segmenter (kan_et_al_1998). Make sure you
+		  get JPosServer running first. Use "rmiregistry 2000 &" and "JPosServer -r ../resource/QTAG.tagset &"
+		  to start POS server, then run JSegmenter. Might encounter server address problems,
+		  change local host name by modifying the field "rmiHost" in "uk/ac/man/cs/choif/extend/Resourcex.java".
+		  Look at "ermintrude" and "doorstop" in "uk/ac/man/cs/choif/extend/RMIx.java" as examples of how to
+		  define new hosts. Of course, you'll need to recompile Segmenter after that. Mail me if there are any
+		  problems.
+
+JSignificance	- Significance test for the results of all compatible experiment pairs. Use the following
+		  commands to generate a table of statistical significance (assume you are in the current
+		  directory) :
+				
+		  mkdir scores
+		  cat `find ../data -name TestLog*` | ../ebin/public.extractScore -o scores
+		  JSignificance -i scores -o significance.txt
+		  rm -rf scores
+
+JTextTile	- My Java implementation of Marti Hearst's TextTiling algorithm (hearst_1994, hearst_1994b)
+		  Note. Use "JTextTile -sw ../resource/STOPWORD.list", see "JTextTile -h" for help.
+
+simRegular	- A Perl baseline algorithm that proposes segment boundaries at regular intervals.
+
+Freddy Choi - 6th Mar 2000
+choif@cs.man.ac.uk
+
+--- BIBLIOGRAPHY ---
+@InProceedings{hearst_1994,
+  author =       {Marti A. Hearst},
+  title =        {Multi-paragraph segmentation of expository text},
+  booktitle =    {Proceedings of the ACL'94},
+  year =         {1994},
+  note =         {Las Crces, NM},
+  OPTannote =    {"9406037.ps.gz".}
+}
+
+@TechReport{hearst_1994,
+  author =       {Marti A. Hearst},
+  title =        {Multi-Paragraph Segmentation of Expository Texts},
+  institution =  {Computer Science Division (EECS), University of California},
+  year =         {1994},
+  number =       {UCB/CSD 94/790},
+  address =      {Berkeley, California 94720},
+  month =        {January},
+  OPTannote =    {"hearsttr.ps.gz".}
+}
+
+@InProceedings{choi_2000naacl,
+  author =       {Freddy Y. Y. Choi},
+  title =        {Advances in domain independent linear text segmentation},
+  booktitle =    {Proceedings of NAACL'00},
+  year =         {2000},
+  address =      {Seattle, USA},
+  month =        {April},
+  OPTannote =    {"choi00.ps.gz"}
+}
+
+@InProceedings{reynar_1999,
+  author =       {Jeffrey C. Reynar},
+  title =        {Statistical Models for Topic Segmentation},
+  booktitle =    {Proceedings of the 37th Annual Meeting of the ACL},
+  pages =        {357-364},
+  year =         {1999},
+  note =         {20-26th June, Maryland, USA},
+  OPTannote =    {}
+}
+
+@PhdThesis{reynar_1998,
+  author =       {Jeffrey C. Reynar},
+  title =        {Topic segmentation: Algorithms and applications},
+  school =       {Computer and Information Science, University of Pennsylvania},
+  year =         {1998},
+  OPTannote =    {}
+}
+
+@InProceedings{reynar_1994,
+  author =       {Jeffrey C. Reynar},
+  title =        {An automatic method of finding topic boundaries},
+  booktitle =    {Proceedings of ACL'94 (Student session)},
+  year =         {1994},
+  OPTannote =    {"reynar94.ps.gz"}
+}
+
+@Article{beeferman_et_al_1999,
+  author =       {Doug Beeferman and Adam Berger and John Lafferty},
+  title =        {Statistical Models for Text Segmentation},
+  journal =      {Machine learning, special issue on Natural Language Processing},
+  year =         {1999},
+  volume =       {34},
+  number =       {1-3},
+  pages =        {177-210},
+  note =         {C. Cardie and R. Mooney (editors)},
+  OPTannote =    {"beeferman99.ps.gz"}	
+}
+
+@InProceedings{beeferman_et_al_1997,
+  author =       {Doug Beeferman and Adam Berger and John Lafferty},
+  title =        {Text Segmentation Using Exponential Models},
+  booktitle =    {Proceedings of EMNLP-2},
+  year =         {1997},
+  OPTannote =    {"beeferman97.ps.gz"}
+}
+
+@Misc{mason_1998,
+  author =       {O. Mason},
+  title =        {QTAG: A Java implementation of the University of Birmingham part-of-speech tagger},
+  howpublished = {WWW},
+  year =         {1998},
+  note =         {O.Mason@bhan.ac.uk},
+  OPTannote =    {}
+}
+
+@InProceedings{kan_et_al_1998,
+  author =       {Min-Yen Kan and Judith L. Klavans and Kathleen R. McKeown},
+  title =        {Linear Segmentation and Segment Significance},
+  booktitle =    {Proceedings of the 6th International Workshop of Very Large Corpora (WVLC-6)},
+  pages =        {197-205},
+  year =         {1998},
+  address =      {Montreal, Quebec, Canada},
+  month =        {August},
+  OPTannote =    {"seg.ps.gz"}
+}
+@InProceedings{kozima_1993,
+  author =       {Hideki Kozima},
+  title =        {Text segmentation based on similarity between words},
+  booktitle =    {Proceedings of ACL'93},
+  pages =        {286-288},
+  year =         {1993},
+  address =      {Ohio},
+  OPTannote =    {"9601005.ps.gz"}
+}

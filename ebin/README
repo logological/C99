@@ -1,0 +1,45 @@
+This directory contains Perl scripts for batch testing
+segmentation algorithms.
+
+--- REQUIREMENTS ---
+The following external programs are required by the scripts
+
+"perl"			- Perl 5 as /usr/bin/perl
+"time"			- Linux command used in private.simulateOneCase and private.testOneCase
+"java"			- JDK 1.1.7+ installed, I assume you have JDK up and running and classpaths are set
+"rmiregistry"		- Part of JDK 1.1.7 for remote access
+
+--- SCRIPTS ---
+Of particular interest are the public. scripts. Make sure you read the description at the
+beginning of each file before you execute them. Some of them might have nasty effects if the
+correct set of arguments are not given.
+
+NOTE! It is a good idea to run these scripts while you are in the current directory, I can't
+guarantee what will happen otherwise (haven't tested other invokation methods). These scripts
+are pretty dumb things, handle with care :-)
+
+list.txt			- A list of Brown corpus files for use as the text sample pool
+list (aj).txt			- Same as list.txt but only has c[aj]**.pos
+public.batch			- Batch test algorithms
+public.BatchAll			- Batch test algorithms on all data sets
+public.SummaryAll		- Create a summary of all test data
+public.testSimulate		- Test a baseline algorithm using a particular dataset. Adjust script for cases where certain sample type (e.g. 3-11) is not available.
+public.testAlgorithm		- Test an algorithm using a particular dataset. Adjust script for cases where certain sample type (e.g. 3-11) is not available.
+public.rename			- Rename the experiment code in a test log
+public.makeSample		- Construct test samples
+public.makeSummary		- Given the TestLog.txt file, generates Latex tables to summarise results
+public.extractScore		- Given a test log, extract all the experiment scores as separate files
+public.significance 		- Compute the statistical significance of the experiment results
+
+--- DIRECTORIES ---
+verify				- A verification of the testing scripts, commands :
+						public.makeSample verify 2
+						public.batch verify
+				  A couple of hours later.......
+						public.makeSummary < verify/TestLog.txt
+				  Joy.
+				
+				
+--------------------------
+Freddy Choi - 6th Mar 2000
+choif@cs.man.ac.uk

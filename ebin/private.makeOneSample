@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+# Make an individual sample file
+# -min <minimum segment length> -max <maximum segment length>
+# Segment length is measured in number of sentences
+
+%arg = @ARGV;
+$min = $arg{"-min"};
+$max = $arg{"-max"};
+$separator = "==========\n";
+
+# Load filenames into memory
+@filename = ();
+$files = 0;
+while ($filename[$files++] = <STDIN>) {}
+$files--;
+
+# Generate random length segments, one from each file
+$range = $max - $min + 1;
+print STDOUT $separator;
+for ($j=0; $j<$files; $j++) {
+	open(INPUT, "<$filename[$j]");
+	$line = $min + int(rand($range));
+	while (!eof(INPUT) && $line > 0) {
+		$text = <INPUT>;
+		if ($text !~ m!^/s*$!) {
+			print STDOUT $text;
+			$line--;
+		}
+	}
+	close(INPUT);
+	print STDOUT $separator;
+}

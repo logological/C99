@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+# Given the output of segmenter and the text file,
+# extract the segment bounds and produce a segmented
+# text file for use with JBeeferman
+# Usage : ...segmenter | txt2seg -i <text file>
+
+%arg = @ARGV;
+$txt = $arg{"-i"};
+
+@b = ();
+$count = 0;
+while (<STDIN>) {
+	if (m!^\(.*\s+([0-9]+)-([0-9]+)\)$!) {
+		$b[$count++] = $1 - 1;
+	}
+}
+
+open(IN, "<$txt");
+$line = 0;
+$i = 0;
+while (<IN>) {
+	if ($i < $count && $line == $b[$i]) {
+		print STDOUT "==========\n";
+		$i++;
+	}
+	print STDOUT $_;
+	$line++;
+}
+close(IN);
+print STDOUT "==========\n";

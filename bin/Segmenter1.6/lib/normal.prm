@@ -1,0 +1,65 @@
+#
+# normal.prm / Min-Yen Kan / Version 1.0 / Fri May  9 21:14:14 EDT 1997
+# 
+#	Data file for quik_segmenter
+#
+#	Each set of numbers below contains specifications for cluster
+#	together a set of occurences.
+#
+#		typeTitle - title assigned to the type (has no effect on 
+#			    actual clustering
+#		befScore  - score for a cluster's front boundary
+#		aftScore  - score for a cluster's rear boundary
+#		intScore  - score/penalty for a cluster's intermediate region
+#		spread    - sentences to consider for clustering
+#		lowBound  - frequency below this threshold discards term
+#		dropIsol  - drop isolated occurences? (1 yes / 0 no)
+#
+# $bestLength = 'int ($avpl * 3)';
+# $expected = 'int ($length / ($avpl * 3))';
+#
+# $befScore = '$score';
+# $aftScore = '$score/2';
+# $intScore = '(($end - $start) > ($length / 5)) ? -1 : -2'; 
+# $avgThreshold = 0.5;
+# $spread = '($avps > .05) ? 2 : 5';
+#
+Normal Terms
+'16'
+'8'
+'-3'
+'2'
+'1'
+'1'
+
+1-star terms (Pronouns)
+'1'
+'10'
+'-5'
+'0'
+'1'
+'1'
+
+2-star terms (Proper Nouns)
+'16'
+'8'
+'-3'
+'3'
+'1'
+'1'
+
+3-star terms (Cue Phrases)
+'0'
+'0'
+'0'
+'0'
+'0'
+'0'
+
+4-star (Quotation Marks)
+'0'
+'0'
+'0'
+'0'
+'0'
+'0'

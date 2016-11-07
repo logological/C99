@@ -1,0 +1,18 @@
+CC=	gcc
+PROG=	tile
+SRCS=	main.c tile.c token.c common.c
+OBJS=	main.o tile.o token.o common.o
+
+LEX=	flex
+CLEANFILES+= token.c
+
+# You need to change this to whereever you have tcl installed
+#LDADD=  -L/usr/sww/lib -ltcl -lm -lfl
+LDADD=  -L/usr/lib -ltcl -lm -lfl -ldl
+CFLAGS= -I/usr/bin/tcl
+
+tile: ${OBJS}
+	${CC} ${CFLAGS} -o tile ${OBJS} ${LDADD}
+
+common.c: mkcommon
+	sh ./mkcommon > common.c

@@ -1,0 +1,6 @@
+#! /bin/bash
+
+# Arguments : <Window size> <Step size> <Stopword list>
+# Got default stopword list on site.
+
+java -ms20M -mx100M uk.ac.man.cs.choif.nlp.seg.linear.JTextTile $@

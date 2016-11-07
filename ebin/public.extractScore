@@ -1,0 +1,29 @@
+#!/usr/bin/perl
+
+# Separate the scores from different experiment conditions
+# Usage : public.extractScore -o <output directory> < <test log>
+
+%arg=@ARGV;
+$dir = $arg{"-o"};
+
+%score = ();
+while (<STDIN>) {
+	if (m!^===$!) {
+		$code = <STDIN>;
+		chomp($code);
+		$set = <STDIN>;
+		chomp($set);
+		$set =~ s!^.*/(.+)/[0-9]+\.ref$!$1!;
+		$error = <STDIN>;
+		$time = <STDIN>;
+		
+		$ref = "$set.$code";
+		$score{$ref} = $score{$ref} . $error;
+	}
+}
+
+foreach $ref (keys(%score)) {
+	open(OUT, ">$dir/$ref");
+	print OUT $score{$ref};
+	close(OUT);
+}

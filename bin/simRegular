@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+
+# A baseline algorithm which divides a document into regular sized chunks
+# Usage : -n <number of segments>
+
+%arg = @ARGV;
+$n = $arg{"-n"};
+
+$count = 0;
+@text = ();
+while (<STDIN>) { $text[$count++] = $_; }
+$interval = $count / $n;
+
+for ($i=0; $i<$count; $i++) {
+	if ($i % $interval == 0) { print STDOUT "==========\n"; }
+	print STDOUT $text[$i];
+}
+print STDOUT "==========\n";

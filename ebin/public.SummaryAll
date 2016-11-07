@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Generate a summary of all experiments on all datasets
+
+cat `find ../data -name TestLog*` | public.makeSummary

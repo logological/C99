@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Segment a raw piece of text as a pipeline
+
+# --- CHANGE PATH
+R=/root/work/Experiments/naacl00/bin/Segmenter1.6/bin
+
+
+cat > $R/temp.txt
+$R/txt2sgml < $R/temp.txt > $R/temp.sgml;
+$R/termer $R/temp.sgml | $R/segmenter -o | $R/txt2seg -i $R/temp.txt;
+rm $R/temp.sgml $R/temp.txt;

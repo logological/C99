@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Test an algorithm
+
+## ARG
+DATASET=$1
+CODENAME=$2
+COMMAND=$3
+
+## VAR
+LOG=$DATASET/TestLog.txt
+find $DATASET -type f -name *.ref | private.applyToList -c "private.testOneCase \"$CODENAME\" \"$COMMAND\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/3-5 -c "private.testOneCase \"$CODENAME\" \"$COMMAND\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/6-8 -c "private.testOneCase \"$CODENAME\" \"$COMMAND\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/9-11 -c "private.testOneCase \"$CODENAME\" \"$COMMAND\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/3-11 -c "private.testOneCase \"$CODENAME\" \"$COMMAND\" \"*IN*\" $LOG"
+

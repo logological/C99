@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+# Apply a command to a list of files, each file is referred to by *IN*
+# e.g. "find . -type f" will get all the regular files in a directory
+
+%Arguments = @ARGV;
+$command = $Arguments{"-c"};
+
+# Get input files
+while (<STDIN>) {
+	$file = $_;
+	chomp($file);
+	$exec = $command;
+	$exec =~ s/\*IN\*/$file/g;
+	print STDOUT "Processing [$file] $exec ....\n";
+	system("$exec");
+}

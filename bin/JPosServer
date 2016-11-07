@@ -1,0 +1,2 @@
+#!/bin/bash
+java uk.ac.man.cs.choif.nlp.pos.PosTaggerServer $@

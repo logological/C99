@@ -1,0 +1,13 @@
+#!/bin/bash
+# Makes a few beep
+echo -ne "\a"
+sleep 1s
+echo -ne "\a"
+sleep 1s
+echo -ne "\a"
+sleep 1s
+echo -ne "\a"
+sleep 1s
+echo -ne "\a"
+sleep 1s
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Make a dataset
+# The numbers like 3-5 is the range of the segment length
+# Usage : <OUTPUT DIR> <# SAMPLEs per range>
+# Example : public.makeSample data 50
+# This will make a directory called "data1" in the current directory and
+# generate 5 samples per segment length range.
+
+# --- ARGUMENTS ---
+D=$1
+N=$2
+
+# --- PROGRAM ---
+private.makeSampleSet $D $N 3 5
+private.makeSampleSet $D $N 6 8
+private.makeSampleSet $D $N 9 11
+private.makeSampleSet $D $N 3 11

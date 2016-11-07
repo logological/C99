@@ -1,0 +1,4 @@
+#!/bin/bash
+# Test statistical significance of a data set
+
+java -ms20M -mx100M uk.ac.man.cs.choif.nlp.seg.linear.eval.Significance $@

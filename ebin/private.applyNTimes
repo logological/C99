@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+# Apply a function n times, the number is given as *N* in the command
+# -n <n times> -c <command>
+
+%Arguments = @ARGV;
+$ntimes = $Arguments{"-n"};
+$command = $Arguments{"-c"};
+
+for ($i=$ntimes; $i-->0;) {
+	$exec = $command;
+	$exec =~ s/\*N\*/$i/g;
+	print STDOUT "Processing $exec .... \n";
+	system("$exec");
+}

@@ -1,3 +1,4 @@
 #!/bin/bash
+# Segment text with C99
 
-java -classpath C99release.jar:$CLASSPATH uk.ac.man.cs.choif.nlp.seg.linear.C99 $@
+java -ms20M -mx100M uk.ac.man.cs.choif.nlp.seg.linear.C99 $@

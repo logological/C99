@@ -1,0 +1,5 @@
+#!/bin/bash
+# Segment text with dot plotting algorithm
+# Argument : <number of segments> <Algorithm type>
+
+java -ms10M -mx100M uk.ac.man.cs.choif.nlp.seg.linear.JDotPlotF $@

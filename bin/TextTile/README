@@ -1,0 +1,12 @@
+Parameters for TextTiling
+
+[Output format]
+-o	Tile information only
+-v	Verbose mode
+-i	Normal mode
+
+[Algorithm parameters]
+-w	Size of the pseudosentenes (20 works well)
+-k	Number of pseudosentences per block (6 works well)
+
+

@@ -1,0 +1,12 @@
+This is the package of all the resources used to produce
+the NAACL00 paper on linear text segmentation.
+
+bin		- Scripts for running the segmentation algorithms
+data 		- Experiment data sets and results
+doc		- Documentation and papers associated with the experiments
+ebin		- Experiment scripts for batch testing
+resource	- Data such as stopword list and pos statistics required by some of the algorithms.
+
+Freddy Choi - 6th Mar 2000
+choif@cs.man.ac.uk
+http://www.cs.man.ac.uk/~choif

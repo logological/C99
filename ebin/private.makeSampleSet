@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Make a dataset
+# The numbers like 3-5 is the range of the segment length
+# Usage : <OUTPUT DIR> <# SAMPLEs per range> <MIN #> <Max #>
+# Example : public.makeSample data1 5 3 15
+# This will make a directory called "data1" in the current directory and
+# generate 5 samples. Each sample consists of segment of length between
+# 3 to 15 sentences.
+
+# --- ARGUMENTS ---
+D=$1
+N=$2
+MIN=$3
+MAX=$4
+
+# --- PROGRAM ---
+mkdir $D
+mkdir "$D/$MIN-$MAX"
+private.applyNTimes -n $N -c "private.randomSelect -n 10 < list.txt | private.makeOneSample -min $MIN -max $MAX > \"$D/$MIN-$MAX/*N*.ref\""

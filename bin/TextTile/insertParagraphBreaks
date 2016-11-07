@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+
+# Insert paragraph breaks for TextTiling algorithm to work
+
+while(<STDIN>) {
+	print STDOUT "$_\n";
+}

@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+# Convert the output of TextTiling to a format usable by
+# JBeeferman for evaluation
+
+while(<STDIN>) {
+	if (m!^<TILE!) { print STDOUT "==========\n"; }
+	elsif (m!^</TILE!) {}
+	elsif (m!^\s*$!) {}
+	else { print STDOUT $_; }
+}
+print STDOUT "==========\n";

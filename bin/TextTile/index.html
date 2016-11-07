@@ -1,0 +1,57 @@
+<html>
+<head>
+<title> UC Berkeley Digital Library Project </title>
+</head>
+
+<H2><a href="/"><img alt = "UC Berkeley Digital Library Project" 
+     src = "http://elib.cs.berkeley.edu/graphics/sun-logo-icon2.gif"></a>
+Texttiles
+</H2>
+<p>
+<hr>
+<p>
+ASCII text files:
+<UL>
+<LI><A HREF="All.txt">All.txt</A> (all the ASCII text files below in one)</LI>
+<LI><A HREF="Makefile">Makefile</A></LI>
+<LI><A HREF="common_words.list">common_words.list</A></LI>
+<LI><A HREF="main.c">main.c</A></LI>
+<LI><A HREF="mkcommon">mkcommon</A></LI>
+<LI><A HREF="tile.1">tile.1</A></LI>
+<LI><A HREF="tile.c">tile.c</A></LI>
+<LI><A HREF="tile.h">tile.h</A></LI>
+<LI><A HREF="token.h">token.h</A></LI>
+<LI><A HREF="token.l">token.l</A></LI>
+</UL>
+Other files:
+<UL>
+<LI><A HREF="hearst.texttiling94.ps">hearst.texttiling94.ps</A> (Postscript)</LI>
+<LI><A HREF="tile.tar.Z">tile.tar.Z</A>(everything in this directory)</LI>
+</UL>
+<P>
+<HR>
+<P>
+<B>tile</B> - split a text file up into small related pieces called tiles 
+<P>
+<PRE>
+tile [-oiv] [-b bound] [-n numiter] [-k kval] [-w wnum] [-p nopara] file ...  
+</PRE>
+<P>
+The tile command is used to partition a document into a set of 
+related pieces called tiles.  The main purpose of this is
+to allow a finer granularity of indexing.  Software that 
+usually indexes documents or pages by words can now use this
+software to break the document up into smaller elements of related 
+information (tiles) and index into that.  The algorithm that
+determines the tiles in a document is essentially statistical in
+nature and is described in a paper by 
+<A HREF="mailto:hearst@parc.xerox.com">Marti Hearst</A> entitled
+"<A HREF="http://cs-tr.cs.berkeley.edu:80/TR/UCB:CSD-94-790">Multi-Paragraph 
+Segmentation of Expository Discourse</A>", a copy of which is included here 
+in postscript format.
+<P>
+By default, the files are broken up into tiles and the tiles are
+displayed by surrounding each with the following meta information:
+<P>
+<PRE>
+    &lt;TILE <U>tilenum</U> - FILE: <u>filename</U> START: <u>startoff</U> END: <u>endoff</u>&gt;

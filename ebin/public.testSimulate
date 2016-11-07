@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Test a simulated algorithm
+# Usage : public.testSimulate <DATASET> <EXPERIMENT CODE> <SIMULATION TYPE>
+
+## ARG
+DATASET=$1
+CODENAME=$2
+SIMULATE=$3
+
+## VAR
+LOG=$DATASET/TestLog.txt
+find $DATASET -type f -name *.ref | private.applyToList -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/3-5 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/6-8 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/9-11 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
+#private.applyToDir -i $DATASET/3-11 -c "private.simulateOneCase \"$CODENAME\" \"$SIMULATE\" \"*IN*\" $LOG"
