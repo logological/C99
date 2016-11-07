@@ -1,5 +1,0 @@
-#!/bin/bash
-# Evaluate a segmentation according to Beeferman's metric
-# Arguments : <ref file> <hyp file>
-
-java uk.ac.man.cs.choif.nlp.seg.linear.eval.Beeferman $@
