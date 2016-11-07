@@ -1,7 +1,0 @@
-#!/bin/bash
-
-COMMAND=$1
-SAMPLE=$2
-LOG=$3
-
-removeBoundary < $SAMPLE | $COMMAND | JBeeferman --ref $SAMPLE >> $LOG

@@ -1,4 +1,0 @@
-#!/bin/bash
-# Evaluate a segmentation according to Beeferman's metric
-
-java uk.ac.man.cs.choif.nlp.seg.linear.eval.BeefermanSim $@
